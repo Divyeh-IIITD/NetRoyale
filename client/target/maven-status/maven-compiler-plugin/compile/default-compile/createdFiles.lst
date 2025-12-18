@@ -1,3 +1,3 @@
-com\strategy\common\model\Unit.class
-com\strategy\common\model\GameState.class
-com\strategy\common\model\UnitType.class
+com\strategy\client\GameApp.class
+com\strategy\client\SoundManager.class
+module-info.class

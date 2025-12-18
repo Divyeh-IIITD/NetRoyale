@@ -1,0 +1,4 @@
+--patch-module
+com.strategy.common=_
+--add-reads
+com.strategy.common=ALL-UNNAMED

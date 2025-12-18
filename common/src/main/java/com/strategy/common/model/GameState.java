@@ -4,21 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameState {
-    private String gameId;
-    private int currentTurnPlayerId; // 1 or 2
-    private boolean isGameOver;
-    private String winnerId;
-    private List<Unit> units; // We store units in a list, not a 2D array
+    private List<Unit> units;
+    private int currentTurnPlayerId;
+
+    // 0 = Empty Grass
+    // 1 = Wall/Rock (Blocks Move & Attack)
+    private int[][] board;
 
     public GameState() {
         this.units = new ArrayList<>();
-        this.currentTurnPlayerId = 1;
-        this.isGameOver = false;
+        this.board = new int[8][8]; // Default 8x8 empty board
     }
 
-    public List<Unit> getUnits() { return units; }
-    public void setUnits(List<Unit> units) { this.units = units; }
+    // --- GETTERS & SETTERS ---
 
-    public int getCurrentTurnPlayerId() { return currentTurnPlayerId; }
-    public void setCurrentTurnPlayerId(int id) { this.currentTurnPlayerId = id; }
+    public List<Unit> getUnits() {
+        return units;
+    }
+
+    public void setUnits(List<Unit> units) {
+        this.units = units;
+    }
+
+    public int getCurrentTurnPlayerId() {
+        return currentTurnPlayerId;
+    }
+
+    public void setCurrentTurnPlayerId(int currentTurnPlayerId) {
+        this.currentTurnPlayerId = currentTurnPlayerId;
+    }
+
+    public int[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
+    }
 }

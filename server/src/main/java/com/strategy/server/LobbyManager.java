@@ -7,7 +7,6 @@ public class LobbyManager {
     // A list of players waiting for a game
     private final List<ClientHandler> waitingPlayers = new ArrayList<>();
 
-    // "synchronized" ensures two threads don't mess up the list at the same time
     public synchronized void addPlayer(ClientHandler player) {
         waitingPlayers.add(player);
         System.out.println("Player joined lobby. Total waiting: " + waitingPlayers.size());
@@ -23,9 +22,13 @@ public class LobbyManager {
 
             System.out.println("MATCH FOUND! " + player1.getPlayerName() + " vs " + player2.getPlayerName());
 
-            // TODO (Day 7): Create a GameSession and start the game
-            player1.sendMessage("MATCH_FOUND", "Opponent: " + player2.getPlayerName());
-            player2.sendMessage("MATCH_FOUND", "Opponent: " + player1.getPlayerName());
+            GameSession session = new GameSession(player1, player2);
+
+            // Link the players to the session
+            player1.setGameSession(session, 1);
+            player2.setGameSession(session, 2);
+
+            session.start();
         }
     }
 

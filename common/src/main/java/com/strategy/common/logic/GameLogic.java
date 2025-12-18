@@ -1,53 +1,36 @@
 package com.strategy.common.logic;
 
-import com.strategy.common.model.Board;
 import com.strategy.common.model.GameState;
 import com.strategy.common.model.Unit;
 
-import java.util.Optional;
-
 public class GameLogic {
 
-    // Returns true if the move is valid, false (or throws exception) otherwise.
     public static boolean validateMove(GameState state, Unit unit, int targetX, int targetY) {
-        Board board = new Board(8, 8); // Should ideally come from state, but fixed for now
-
-        // Rule 1: Target must be on the board
-        if (!board.isWithinBounds(targetX, targetY)) {
-            System.out.println("Invalid Move: Out of bounds.");
+        // 1. Check Bounds (0-7)
+        if (targetX < 0 || targetX > 7 || targetY < 0 || targetY > 7) {
             return false;
         }
 
-        // Rule 2: Unit must belong to the player whose turn it is
-        if (unit.getOwnerId() != state.getCurrentTurnPlayerId()) {
-            System.out.println("Invalid Move: Not your unit.");
+        // 2. Check Distance (Max 3 tiles for simplicity, or unit.getMovementRange())
+        int dist = Math.abs(targetX - unit.getX()) + Math.abs(targetY - unit.getY());
+        int maxMove = unit.getType().getMovementRange();
+        if (dist > maxMove) {
             return false;
         }
 
-        // Rule 3: Target tile must be empty (No stacking units!)
-        if (isTileOccupied(state, targetX, targetY)) {
-            System.out.println("Invalid Move: Tile occupied.");
+        // 3. Check Terrain (New for Day 13)
+        // If the target tile is a Wall (1), you cannot move there.
+        if (state.getBoard()[targetY][targetX] == 1) {
             return false;
         }
 
-        // Rule 4: Movement Range (Manhattan Distance or Euclidean?)
-        // Let's use Manhattan Distance for a grid ( |x1-x2| + |y1-y2| )
-        int distance = Math.abs(unit.getX() - targetX) + Math.abs(unit.getY() - targetY);
-        int maxRange = unit.getType().getMovementRange(); // You need to add this getter to UnitType!
-
-        // TEMPORARY FIX: If you haven't added getMovementRange() to UnitType yet, assume 3.
-        // int maxRange = 3;
-
-        if (distance > maxRange) {
-            System.out.println("Invalid Move: Too far. Distance: " + distance + ", Max: " + maxRange);
-            return false;
+        // 4. Check Occupancy (Is there another unit there?)
+        for (Unit other : state.getUnits()) {
+            if (other.getX() == targetX && other.getY() == targetY) {
+                return false; // Tile is occupied
+            }
         }
 
         return true;
-    }
-
-    private static boolean isTileOccupied(GameState state, int x, int y) {
-        return state.getUnits().stream()
-                .anyMatch(u -> u.getX() == x && u.getY() == y);
     }
 }
