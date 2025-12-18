@@ -1,9 +1,14 @@
 module com.strategy.client {
+    // JavaFX modules we actually use
     requires javafx.controls;
-    requires javafx.fxml;
     requires javafx.media;
-    requires com.fasterxml.jackson.databind;
+
+    // Our other modules
     requires com.strategy.common;
 
+    // Libraries
+    requires com.fasterxml.jackson.databind;
+
+    // Export our package so JavaFX can launch the GameApp
     exports com.strategy.client;
 }

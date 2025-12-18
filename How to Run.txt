@@ -1,0 +1,13 @@
+Open NetRoyale Folder
+Run the Server on your terminal 
+make sure the directory ends with NetRoyale\NetRoyale
+run -> java -jar server.jar
+then
+open another terminal in the same directory and
+run -> java -jar client.jar
+login as player 1
+then
+open another terminal in the same directory and
+run -> java -jar client.jar
+login as player 2
+play
